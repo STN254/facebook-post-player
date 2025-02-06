@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Post Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .post-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .next-button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #0078d4;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .next-button:hover {
+            background-color: #005c99;
+        }
+    </style>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v14.0" nonce="YourNonce"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Facebook Post Player</h1>
+        <div id="post-container" class="post-container"></div>
+        <button class="next-button" onclick="loadNextPost()">Next Post</button>
+    </div>
+
+    <script>
+        // List of Facebook Post URLs
+        let postLinks = [
+            'https://www.facebook.com/{user}/posts/{post_id}', 
+            'https://www.facebook.com/{user}/posts/{post_id}' // Replace with actual post links
+            // Add more links here up to 500
+        ];
+        
+        let currentIndex = 0;
+
+        // Function to load the next post
+        function loadNextPost() {
+            if (currentIndex < postLinks.length) {
+                let postContainer = document.getElementById('post-container');
+                postContainer.innerHTML = `
+                    <blockquote class="fb-post" data-href="${postLinks[currentIndex]}" data-width="500"></blockquote>
+                `;
+                window.FB.XFBML.parse();
+                currentIndex++;
+            } else {
+                alert("All posts have been played.");
+            }
+        }
+
+        // Load the first post immediately
+        loadNextPost();
+
+        // Automatically load the next post every 30 seconds (you can adjust this)
+        setInterval(loadNextPost, 30000);
+    </script>
+</body>
+</html>
